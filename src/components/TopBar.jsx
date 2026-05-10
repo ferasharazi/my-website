@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Apple, Wifi, Battery, Search } from 'lucide-react';
+import { Volume2, Mail, Battery } from 'lucide-react';
 
 const TopBar = () => {
   const [time, setTime] = useState(new Date());
@@ -10,23 +10,21 @@ const TopBar = () => {
   }, []);
 
   return (
-    <div className="top-bar">
-      <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
-        <Apple size={16} color="white" />
-        <span style={{ fontWeight: 'bold' }}>Feras Alharazi</span>
-        <span>File</span>
-        <span>Edit</span>
-        <span>View</span>
-        <span>Go</span>
-        <span>Window</span>
-        <span>Help</span>
+    <div className="classic-topbar">
+      <div className="topbar-left">
+        <span className="brand-name">Feras Alharazi</span>
+        <div className="topbar-lines"></div>
       </div>
-      <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
-        <Wifi size={16} />
-        <Battery size={16} />
-        <Search size={16} />
-        <span>
-          {time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+      
+      <div className="topbar-right">
+        <span className="topbar-email">contact@proglabsync.com</span>
+        <div className="topbar-icons">
+          <Volume2 size={16} strokeWidth={2.5} />
+          <Mail size={16} strokeWidth={2.5} />
+          <Battery size={16} strokeWidth={2.5} style={{ transform: 'rotate(-90deg)' }} />
+        </div>
+        <span className="topbar-time">
+          {time.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true })}
         </span>
       </div>
     </div>

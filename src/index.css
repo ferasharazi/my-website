@@ -1,39 +1,28 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&family=Instrument+Serif:ital@0;1&display=swap');
 
 :root {
-  --bg-color: #0d1117;
-  --sidebar-bg: #161b22;
-  --activity-bar-bg: #0d1117;
-  --status-bar-bg: #0d1117;
-  --border-color: #30363d;
-  --text-main: #c9d1d9;
-  --text-muted: #8b949e;
-  --accent-color: #58a6ff;
-  --tab-active-bg: #0d1117;
-  --tab-inactive-bg: #161b22;
-  --tab-border: #30363d;
-  
-  /* VS Code Syntax Colors */
-  --syntax-keyword: #ff7b72;
-  --syntax-string: #a5d6ff;
-  --syntax-function: #d2a8ff;
-  --syntax-comment: #8b949e;
-  --syntax-constant: #79c0ff;
-  
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  --bg-color: #d1d1d1;
+  --window-bg: #ffffff;
+  --border-color: #000000;
+  --text-main: #000000;
+  --header-height: 28px;
+  --grid-size: 20px;
+  --font-ui: 'IBM+Plex+Mono', monospace;
+  --font-serif: 'Instrument Serif', serif;
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  font-family: var(--font-sans);
   background-color: var(--bg-color);
   color: var(--text-main);
+  font-family: var(--font-ui);
   overflow: hidden;
   height: 100vh;
   width: 100vw;
@@ -43,52 +32,366 @@ body {
   height: 100%;
 }
 
-.desktop-wallpaper {
-  position: fixed;
+/* The Grid Background */
+.desktop {
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  background-color: #e0e0e0;
+  background-image: 
+    linear-gradient(#d1d1d1 1px, transparent 1px),
+    linear-gradient(90deg, #d1d1d1 1px, transparent 1px);
+  background-size: var(--grid-size) var(--grid-size);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Grain / Texture Overlay */
+.desktop::after {
+  content: "";
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url('/wallpaper.png');
-  background-size: cover;
-  background-position: center;
-  z-index: -1;
+  pointer-events: none;
+  background-image: url("https://www.transparenttextures.com/patterns/p6.png");
+  opacity: 0.4;
+  z-index: 1000;
 }
 
-.glass {
-  background: rgba(13, 17, 23, 0.7);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+/* Vignette Effect */
+.vignette {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.1) 100%);
+  z-index: 999;
 }
 
-button {
-  background: none;
-  border: none;
-  color: inherit;
+.main-stage {
+  flex: 1;
+  position: relative;
+  padding: 20px;
+  overflow: hidden;
+}
+
+/* Classic Window Style */
+.classic-window {
+  position: absolute;
+  background: var(--window-bg);
+  border: 2px solid var(--border-color);
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+  min-height: 200px;
+  z-index: 10;
+}
+
+.window-titlebar {
+  height: 24px;
+  background: white;
+  border-bottom: 2px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  padding: 0 4px;
+  cursor: grab;
+  position: relative;
+}
+
+.window-titlebar:active {
+  cursor: grabbing;
+}
+
+.window-title-lines {
+  flex: 1;
+  height: 100%;
+  margin: 0 10px;
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    var(--border-color) 2px,
+    var(--border-color) 3px
+  );
+  background-size: 100% 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.window-title-text {
+  background: white;
+  padding: 0 10px;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.window-close-btn {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--border-color);
+  background: white;
   cursor: pointer;
-  font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-a {
-  text-decoration: none;
-  color: var(--accent-color);
-}
-
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
+.window-close-btn:active {
   background: var(--border-color);
-  border-radius: 4px;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: var(--text-muted);
+.window-content {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* Desktop Icons */
+.desktop-icons {
+  position: absolute;
+  top: 50px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+}
+
+.icon-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  width: 80px;
+}
+
+.icon-visual {
+  width: 48px;
+  height: 48px;
+  image-rendering: pixelated;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-label {
+  font-size: 11px;
+  background: white;
+  border: 1px solid transparent;
+  padding: 1px 4px;
+  text-align: center;
+  word-break: break-all;
+  font-weight: bold;
+}
+
+.icon-item:hover .icon-label {
+  background: black;
+  color: white;
+  border-color: black;
+}
+
+/* Window Titlebar Refinement */
+.window-title-lines-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  margin: 0 10px;
+}
+.window-title-lines {
+  flex: 1;
+  height: 12px;
+  background-image: repeating-linear-gradient(
+    0deg,
+    black,
+    black 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+.window-title-text {
+  padding: 0 10px;
+  font-weight: bold;
+  font-size: 13px;
+  text-transform: uppercase;
+  background: white;
+}
+
+/* Intro Screen */
+.intro-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: black;
+  color: white;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-ui);
+  padding: 20px;
+}
+.intro-content {
+  max-width: 600px;
+  width: 100%;
+}
+.intro-line {
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+.cursor {
+  display: inline-block;
+  width: 10px;
+  height: 20px;
+  background: white;
+  animation: blink 0.8s infinite;
+}
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+/* Classic TopBar */
+.classic-topbar {
+  height: 32px;
+  background: white;
+  border-bottom: 2px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  z-index: 1000;
+  font-family: var(--font-ui);
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex: 1;
+}
+
+.brand-name {
+  font-family: var(--font-serif);
+  font-size: 24px;
+  font-weight: bold;
+  letter-spacing: -0.5px;
+}
+
+.topbar-lines {
+  flex: 1;
+  height: 12px;
+  background-image: repeating-linear-gradient(
+    0deg,
+    black,
+    black 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  margin-right: 20px;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.topbar-icons {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.topbar-time {
+  min-width: 70px;
+  text-align: right;
+}
+
+.topbar-email {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .topbar-email {
+    display: block;
+  }
+}
+
+/* Mac Content Styling */
+.mac-content {
+  padding: 5px;
+  color: black;
+  font-family: var(--font-ui);
+}
+.mac-h2 {
+  font-family: var(--font-serif);
+  font-size: 28px;
+  margin-bottom: 10px;
+  border-bottom: 2px solid black;
+}
+.mac-h3 {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 15px 0 5px 0;
+  text-transform: uppercase;
+}
+.mac-p {
+  font-size: 14px;
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+.mac-ul {
+  margin-left: 20px;
+  font-size: 14px;
+}
+.mac-divider {
+  height: 2px;
+  background: black;
+  margin: 15px 0;
+}
+.mac-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: black;
+  text-decoration: underline;
+  font-weight: bold;
+  font-size: 13px;
+}
+.project-card {
+  border: 1px solid black;
+  padding: 10px;
+  margin-bottom: 15px;
+  background: #f0f0f0;
+}
+.social-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.mac-social-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+  font-size: 14px;
+}
+.mac-social-item:hover {
+  text-decoration: underline;
 }
