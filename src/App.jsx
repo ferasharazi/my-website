@@ -5,7 +5,7 @@ import Window from './components/Window';
 import DesktopIcon from './components/DesktopIcon';
 import { 
   Folder, FileText, Heart, Monitor, 
-  ExternalLink, Github, Mail, MapPin,
+  ExternalLink, Globe, Mail, MapPin,
   Cpu, Terminal as TerminalIcon, HardDrive
 } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -103,7 +103,7 @@ function App() {
       content: (
         <div className="mac-content social-list">
           <a href="https://github.com/ferasharazi" target="_blank" className="mac-social-item">
-            <Github size={20} /> github.com/ferasharazi
+            <Globe size={20} /> github.com/ferasharazi
           </a>
           <div className="mac-social-item">
             <Mail size={20} /> contact@proglabsync.com
